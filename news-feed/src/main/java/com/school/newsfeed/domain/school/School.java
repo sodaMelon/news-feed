@@ -16,7 +16,7 @@ public class School extends BaseEntity {
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name="uuid2", strategy = "uuid2")
-    @Column(name="user_id",columnDefinition = "BINARY(16)")
+    @Column(name="school_id",columnDefinition = "BINARY(16)")
     private UUID id;
 
     @Column
