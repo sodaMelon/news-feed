@@ -27,4 +27,10 @@ public class LoginController {
         }
         return ResponseEntity.badRequest().body("login fail");
     }
+
+    @GetMapping("/logout")
+    public ResponseEntity logout(HttpSession session) {
+        session.removeAttribute("loginUser");
+        return ResponseEntity.ok().body("logout complete");
+    }
 }
