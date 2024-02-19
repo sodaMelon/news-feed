@@ -2,12 +2,18 @@ package com.school.newsfeed.domain.schoolnews;
 
 import com.school.newsfeed.common.BaseEntity;
 import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.util.UUID;
 
+@Entity
+@Getter
+@NoArgsConstructor
 public class SchoolNews extends BaseEntity {
     @Id
     @GeneratedValue(generator = "uuid2")
