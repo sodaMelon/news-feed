@@ -2,6 +2,7 @@ package com.school.newsfeed.domain.schoolmanager;
 
 import com.school.newsfeed.common.BaseEntity;
 import com.school.newsfeed.domain.school.Area;
+import com.school.newsfeed.domain.school.School;
 import com.school.newsfeed.domain.school.SchoolType;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -28,4 +29,10 @@ public class SchoolManager extends BaseEntity {
 
     @Column
     private Boolean del; //default=false
+
+    public SchoolManager(School school, UUID userId) {
+        this.userId = userId;
+        this.schoolId = school.getId();
+        this.del = false;
+    }
 }
