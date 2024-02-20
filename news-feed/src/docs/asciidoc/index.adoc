@@ -1,0 +1,38 @@
+
+= School-News-Feed
+:toc: left
+:toclevels: 2
+:sectlinks:
+
+'학교소식 뉴스피드'를 위한 API문서
+
+* 관리자 : 이소담(sodamlee315@gmail.com)
+* 문서는 Spring REST Docs 를 사용하여, 생성되었습니다. (문서 수정시에도 꼭 테스트 코드에 의해 문서가 자동생성되도록 해주세요)
+
+[[resources-post]]
+== User
+'학교소식 뉴스피드'를 사용하는 유저
+
+
+NOTE: 프로토타입버전에서는 Email로 유저구분을 하고 있습니다. (이후 정책에 의해 변경될 예정입니다.)
+
+[[resources-post-create]]
+=== User 생성
+
+유저 생성(학생 또는 학교관리자)
+
+==== HTTP request
+include::build/generated-snippets/user-join/request-fields.adoc[]
+include::build/generated-snippets/user-join/http-request.adoc[]
+
+
+
+==== HTTP response
+include::build/generated-snippets/user-join/response-fields.adoc[]
+include::build/generated-snippets/user-join/http-response.adoc[]
+
+* 성공했을 경우 200 반환
+include::build/generated-snippets/user-join/http-response.adoc[]
+* 실패했을 경우 400 반환(예: 이전에 가입한적 있는 이메일)
+include::build/generated-snippets/user-join-fail/http-response.adoc[]
+
