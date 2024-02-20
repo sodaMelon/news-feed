@@ -58,3 +58,19 @@ include::build/generated-snippets/user-login/http-response.adoc[]
 * 실패했을 경우 400 반환(예: 가입기록없는 이메일)
 include::build/generated-snippets/user-login-fail/http-response.adoc[]
 
+
+[[User-logout]]
+=== User 로그아웃
+
+*[GET] http://base-url/user/logout*
+
+* 이메일을 사용한 유저 로그아웃(학생 또는 학교관리자), 현재 세션 이용중.
+
+==== HTTP request
+include::build/generated-snippets/user-logout/http-request.adoc[]
+
+==== HTTP response
+* 성공했을 경우 204 반환
+include::build/generated-snippets/user-logout/http-response.adoc[]
+
+

@@ -42,6 +42,7 @@ public class UserControllerTest {
         createNewUserFail(managerEmail);
         loginFail("wrong@email.com");
         login(managerEmail);
+        logout();
         }
 
     public void createNewUser(String managerEmail) throws Exception {
@@ -100,6 +101,12 @@ public class UserControllerTest {
                         .param("email", wrongEmail))
                 .andExpect(status().isBadRequest())
                 .andDo(document("user-login-fail"));
+    }
+
+    public void logout() throws Exception {
+        mockMvc.perform(get("/user/logout"))
+                .andExpect(status().isNoContent())
+                .andDo(document("user-logout"));
     }
 
 }

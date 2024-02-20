@@ -33,4 +33,10 @@ public class UserController {
         }
         return ResponseEntity.badRequest().build();
     }
+
+    @GetMapping("/logout")
+    public ResponseEntity logout(HttpSession session) {
+        session.removeAttribute("loginUser");
+        return ResponseEntity.noContent().build();
+    }
 }
