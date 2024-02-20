@@ -1,6 +1,5 @@
 package com.school.newsfeed.domain.user.login;
 
-import com.school.newsfeed.domain.school.SchoolRepository;
 import com.school.newsfeed.domain.user.login.dto.LoginUserDto;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -15,8 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 public class LoginController {
-    private final LoginService loginService;
-    private final SchoolRepository schoolRepository;
+    private final UserService loginService;
 
     @GetMapping("/login")
     public ResponseEntity login(@RequestParam String email, HttpSession session){

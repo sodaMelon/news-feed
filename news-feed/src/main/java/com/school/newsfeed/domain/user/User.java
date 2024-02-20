@@ -1,6 +1,7 @@
 package com.school.newsfeed.domain.user;
 
 import com.school.newsfeed.common.BaseTimeEntity;
+import com.school.newsfeed.domain.user.dto.UserJoinRequest;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,10 +36,11 @@ public class User  extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private UserStatus userStatus;
 
-    public User(String name, String phone) {
-        this.name = name;
-        this.phone = phone;
-        this.userType = UserType.STUDENT;
+    public User(UserJoinRequest dto) {
+        this.email = dto.getEmail();
+        this.name = dto.getName();
+        this.phone = dto.getPhone();
+        this.userType = dto.getUserType();
         this.userStatus = UserStatus.ACTIVE;
     }
 }
