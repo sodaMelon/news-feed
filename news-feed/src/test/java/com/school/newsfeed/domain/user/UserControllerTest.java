@@ -1,28 +1,25 @@
 package com.school.newsfeed.domain.user;
 
-
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jayway.jsonpath.JsonPath;
 import com.school.newsfeed.NewsFeedApplication;
-import com.school.newsfeed.domain.user.UserType;
 import com.school.newsfeed.domain.user.dto.UserJoinRequest;
 import com.school.newsfeed.domain.user.dto.UserJoinResponse;
-import com.school.newsfeed.domain.user.login.UserService;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(classes = NewsFeedApplication.class)
@@ -33,10 +30,9 @@ public class UserControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
-    private UserService userService;
-
     private ObjectMapper mapper;
+
+    private String mangerUserId;
 
     @Test
     public void contextLoad() throws Exception{
@@ -44,13 +40,13 @@ public class UserControllerTest {
         mapper= new ObjectMapper();
         createNewUser(managerEmail);
         createNewUserFail(managerEmail);
-    }
+        loginFail("wrong@email.com");
+        login(managerEmail);
+        }
 
     public void createNewUser(String managerEmail) throws Exception {
         UserJoinRequest request = new UserJoinRequest(managerEmail, "김관리자", "010-9876-5432", UserType.SCHOOL_MANAGER);
-        UserJoinResponse response = new UserJoinResponse(managerEmail, false);
         String jsonRequest = mapper.writeValueAsString(request);
-        when(userService.madeNewUser(any())).thenReturn(response);
 
         this.mockMvc
                 .perform(post("/user/join")
@@ -73,7 +69,6 @@ public class UserControllerTest {
         UserJoinRequest request = new UserJoinRequest(managerEmail, "김중복", "010-9876-5432", UserType.SCHOOL_MANAGER);
         UserJoinResponse response = new UserJoinResponse(managerEmail, true);
         String jsonRequest = mapper.writeValueAsString(request);
-        when(userService.madeNewUser(any())).thenReturn(response);
 
         this.mockMvc
                 .perform(post("/user/join")
@@ -82,6 +77,29 @@ public class UserControllerTest {
                 .andExpect(status().isBadRequest())
                 .andDo(document("user-join-fail"
                         ));
+    }
+
+    public void login(String managerEmail) throws Exception {
+        MvcResult response = mockMvc.perform(get("/user/login")
+                        .param("email", managerEmail))
+                .andExpect(status().isOk())
+                .andDo(document("user-login",
+                        queryParameters(parameterWithName("email").description("가입한 이메일")),
+                        responseFields(
+                                fieldWithPath("userId").description("사용자의 고유ID"),
+                                fieldWithPath("email").description("사용자의 이메일"),
+                                fieldWithPath("userName").description("사용자의 이름"),
+                                fieldWithPath("userType").description("사용자 타입 (SCHOOL_MANAGER | STUDENT)")
+                        )))
+                .andReturn();
+        mangerUserId = JsonPath.parse(response.getResponse().getContentAsString()).read("userId");
+    }
+
+    public void loginFail(String wrongEmail) throws Exception {
+        mockMvc.perform(get("/user/login")
+                        .param("email", wrongEmail))
+                .andExpect(status().isBadRequest())
+                .andDo(document("user-login-fail"));
     }
 
 }

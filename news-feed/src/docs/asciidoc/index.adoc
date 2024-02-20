@@ -31,10 +31,30 @@ include::build/generated-snippets/user-join/http-request.adoc[]
 
 ==== HTTP response
 include::build/generated-snippets/user-join/response-fields.adoc[]
-include::build/generated-snippets/user-join/http-response.adoc[]
-
 * 성공했을 경우 200 반환
 include::build/generated-snippets/user-join/http-response.adoc[]
 * 실패했을 경우 400 반환(예: 이전에 가입한적 있는 이메일)
 include::build/generated-snippets/user-join-fail/http-response.adoc[]
+
+
+[[User-login]]
+=== User 로그인
+
+*[GET] http://base-url/user/login*
+
+* 이메일을 사용한 유저 로그인(학생 또는 학교관리자), 현재 세션 이용중.
+* 프로토타입단계에선 비밀번호를 고려하지 않았음!! 차후에 바뀔 수 있음
+
+==== HTTP request
+include::build/generated-snippets/user-login/query-parameters.adoc[]
+include::build/generated-snippets/user-login/http-request.adoc[]
+
+
+
+==== HTTP response
+include::build/generated-snippets/user-login/response-fields.adoc[]
+* 성공했을 경우 200 반환
+include::build/generated-snippets/user-login/http-response.adoc[]
+* 실패했을 경우 400 반환(예: 가입기록없는 이메일)
+include::build/generated-snippets/user-login-fail/http-response.adoc[]
 

@@ -1,8 +1,5 @@
 package com.school.newsfeed.domain.user.login;
 
-import com.school.newsfeed.domain.school.School;
-import com.school.newsfeed.domain.school.SchoolRepository;
-import com.school.newsfeed.domain.schoolmanager.SchoolMangerRepository;
 import com.school.newsfeed.domain.user.User;
 import com.school.newsfeed.domain.user.UserRepository;
 import com.school.newsfeed.domain.user.dto.UserJoinRequest;
@@ -26,7 +23,6 @@ public class UserService {
 
     public UserJoinResponse madeNewUser(UserJoinRequest request){
         Optional<User> result = userRepository.findByEmail(request.getEmail());
-        System.out.println("here");
                 if (result.isEmpty() ) {
                    userRepository.save(new User(request));
                    return new UserJoinResponse(request.getEmail(), false);
