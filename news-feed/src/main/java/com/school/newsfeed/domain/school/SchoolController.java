@@ -2,7 +2,7 @@ package com.school.newsfeed.domain.school;
 
 import com.school.newsfeed.domain.school.dto.MakeSchoolDto;
 import com.school.newsfeed.domain.user.UserType;
-import com.school.newsfeed.domain.user.login.dto.LoginUserDto;
+import com.school.newsfeed.domain.user.dto.LoginUserDto;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

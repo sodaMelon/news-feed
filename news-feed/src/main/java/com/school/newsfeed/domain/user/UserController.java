@@ -2,8 +2,7 @@ package com.school.newsfeed.domain.user;
 
 import com.school.newsfeed.domain.user.dto.UserJoinRequest;
 import com.school.newsfeed.domain.user.dto.UserJoinResponse;
-import com.school.newsfeed.domain.user.login.UserService;
-import com.school.newsfeed.domain.user.login.dto.LoginUserDto;
+import com.school.newsfeed.domain.user.dto.LoginUserDto;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

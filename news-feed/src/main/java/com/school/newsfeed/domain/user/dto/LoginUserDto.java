@@ -1,4 +1,4 @@
-package com.school.newsfeed.domain.user.login.dto;
+package com.school.newsfeed.domain.user.dto;
 
 import com.school.newsfeed.domain.user.UserType;
 import lombok.AllArgsConstructor;

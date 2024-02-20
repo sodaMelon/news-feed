@@ -1,6 +1,6 @@
 package com.school.newsfeed.common;
 
-import com.school.newsfeed.domain.user.login.dto.LoginUserDto;
+import com.school.newsfeed.domain.user.dto.LoginUserDto;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;

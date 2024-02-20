@@ -3,7 +3,7 @@ package com.school.newsfeed.domain.school;
 import com.school.newsfeed.domain.school.dto.MakeSchoolDto;
 import com.school.newsfeed.domain.schoolmanager.SchoolManager;
 import com.school.newsfeed.domain.schoolmanager.SchoolMangerRepository;
-import com.school.newsfeed.domain.user.login.dto.LoginUserDto;
+import com.school.newsfeed.domain.user.dto.LoginUserDto;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

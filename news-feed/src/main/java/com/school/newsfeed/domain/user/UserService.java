@@ -1,10 +1,8 @@
-package com.school.newsfeed.domain.user.login;
+package com.school.newsfeed.domain.user;
 
-import com.school.newsfeed.domain.user.User;
-import com.school.newsfeed.domain.user.UserRepository;
+import com.school.newsfeed.domain.user.dto.LoginUserDto;
 import com.school.newsfeed.domain.user.dto.UserJoinRequest;
 import com.school.newsfeed.domain.user.dto.UserJoinResponse;
-import com.school.newsfeed.domain.user.login.dto.LoginUserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
