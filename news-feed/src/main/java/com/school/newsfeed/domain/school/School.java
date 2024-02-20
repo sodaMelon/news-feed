@@ -2,7 +2,9 @@ package com.school.newsfeed.domain.school;
 
 import com.school.newsfeed.common.BaseEntity;
 import com.school.newsfeed.common.BaseTimeEntity;
+import com.school.newsfeed.domain.school.dto.MakeSchoolDto;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
@@ -35,4 +37,12 @@ public class School extends BaseEntity {
 
     @Column
     private Boolean del; //default=false
+
+    public School(MakeSchoolDto dto) {
+        this.name = dto.getName();
+        this.address = dto.getAddress();
+        this.schoolType = dto.getSchoolType();
+        this.area = dto.getArea();
+        this.del = false;
+    }
 }

@@ -1,0 +1,106 @@
+
+= School-News-Feed
+:toc: left
+:toclevels: 2
+:sectlinks:
+
+'학교소식 뉴스피드'를 위한 API문서
+
+* 관리자 : 이소담(sodamlee315@gmail.com)
+* 문서는 Spring REST Docs 를 사용하여, 생성되었습니다. (문서 수정시에도 꼭 테스트 코드에 의해 문서가 자동생성되도록 해주세요)
+* HTTP 201 Created는 DB 전파 문제를 고려하여 사용하지 않습니다.
+
+[[resources-post]]
+== User
+'학교소식 뉴스피드'를 사용하는 유저
+
+
+NOTE: 프로토타입버전에서는 Email로 유저구분을 하고 있습니다. (이후 정책에 의해 변경될 예정입니다.)
+
+[[User-join]]
+=== User 가입
+
+*[POST] http://base-url/user/join*
+
+가입을 통한 유저 생성(학생 또는 학교관리자)
+
+==== HTTP request
+include::build/generated-snippets/user-join/request-fields.adoc[]
+include::build/generated-snippets/user-join/http-request.adoc[]
+
+
+
+==== HTTP response
+include::build/generated-snippets/user-join/response-fields.adoc[]
+* 성공했을 경우 200 반환
+include::build/generated-snippets/user-join/http-response.adoc[]
+* 실패했을 경우 400 반환(예: 이전에 가입한적 있는 이메일)
+include::build/generated-snippets/user-join-fail/http-response.adoc[]
+
+
+[[User-login]]
+=== User 로그인
+
+*[GET] http://base-url/user/login*
+
+* 이메일을 사용한 유저 로그인(학생 또는 학교관리자), 현재 세션 이용중.
+* 프로토타입단계에선 비밀번호를 고려하지 않았음!! 차후에 바뀔 수 있음
+
+==== HTTP request
+include::build/generated-snippets/user-login/query-parameters.adoc[]
+include::build/generated-snippets/user-login/http-request.adoc[]
+
+
+
+==== HTTP response
+include::build/generated-snippets/user-login/response-fields.adoc[]
+* 성공했을 경우 200 반환
+include::build/generated-snippets/user-login/http-response.adoc[]
+* 실패했을 경우 400 반환(예: 가입기록없는 이메일)
+include::build/generated-snippets/user-login-fail/http-response.adoc[]
+
+
+[[User-logout]]
+=== User 로그아웃
+
+*[GET] http://base-url/user/logout*
+
+* 이메일을 사용한 유저 로그아웃(학생 또는 학교관리자), 현재 세션 이용중.
+
+==== HTTP request
+include::build/generated-snippets/user-logout/http-request.adoc[]
+
+==== HTTP response
+* 성공했을 경우 204 반환
+include::build/generated-snippets/user-logout/http-response.adoc[]
+
+
+== School
+'학교소식 뉴스피드'의 학교 소식 발행 주체
+
+
+
+[[School-create]]
+=== School 생성
+
+*[POST] http://base-url/school*
+
+* userType이 학생인 User는 학교를 생성 할 수 없다.
+
+* userType이 학교 관리자인 User는 학교(페이지)를 생성 할 수 있다.
+
+** 이 방식을 통해 최초로 학교를 생성한 User는 해당 학교의SchoolNews를 발행 할 수있는 권한이 생긴다.
+
+
+==== HTTP request
+include::build/generated-snippets/school-create/request-fields.adoc[]
+include::build/generated-snippets/school-create/http-request.adoc[]
+
+
+
+==== HTTP response
+include::build/generated-snippets/school-create/response-fields.adoc[]
+* 성공했을 경우 200 반환
+include::build/generated-snippets/school-create/http-response.adoc[]
+* 실패했을 경우 401 반환(예: 학생이 학교를 생성하려고 했을 경우)
+include::build/generated-snippets/school-create-by-student/http-response.adoc[]
