@@ -8,6 +8,7 @@
 
 * 관리자 : 이소담(sodamlee315@gmail.com)
 * 문서는 Spring REST Docs 를 사용하여, 생성되었습니다. (문서 수정시에도 꼭 테스트 코드에 의해 문서가 자동생성되도록 해주세요)
+* HTTP 201 Created는 DB 전파 문제를 고려하여 사용하지 않습니다.
 
 [[resources-post]]
 == User
@@ -74,3 +75,32 @@ include::build/generated-snippets/user-logout/http-request.adoc[]
 include::build/generated-snippets/user-logout/http-response.adoc[]
 
 
+== School
+'학교소식 뉴스피드'의 학교 소식 발행 주체
+
+
+
+[[School-create]]
+=== School 생성
+
+*[POST] http://base-url/school*
+
+* userType이 학생인 User는 학교를 생성 할 수 없다.
+
+* userType이 학교 관리자인 User는 학교(페이지)를 생성 할 수 있다.
+
+** 이 방식을 통해 최초로 학교를 생성한 User는 해당 학교의SchoolNews를 발행 할 수있는 권한이 생긴다.
+
+
+==== HTTP request
+include::build/generated-snippets/school-create/request-fields.adoc[]
+include::build/generated-snippets/school-create/http-request.adoc[]
+
+
+
+==== HTTP response
+include::build/generated-snippets/school-create/response-fields.adoc[]
+* 성공했을 경우 200 반환
+include::build/generated-snippets/school-create/http-response.adoc[]
+* 실패했을 경우 401 반환(예: 학생이 학교를 생성하려고 했을 경우)
+include::build/generated-snippets/school-create-by-student/http-response.adoc[]
