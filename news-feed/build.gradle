@@ -3,7 +3,9 @@ plugins {
 	id 'org.springframework.boot' version '3.2.2'
 	id 'io.spring.dependency-management' version '1.1.4'
 	id 'jacoco'
+	id "org.asciidoctor.jvm.convert" version "3.3.2"
 }
+
 jacoco {
 	toolVersion = "0.8.11"
 	reportsDirectory = layout.buildDirectory.dir('customJacocoReportDir')
@@ -29,15 +31,44 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'com.jayway.jsonpath:json-path:2.7.0'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.mysql:mysql-connector-j'
+	testRuntimeOnly 'com.h2database:h2'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+	outputs.dir snippetsDir
 }
+
+ext{
+	snippetsDir = file('build/generated-snippets') //snippets 파일을 저장할 디렉토리 생성
+}
+
+
+asciidoctor {
+	inputs.dir snippetsDir
+	dependsOn test
+}
+
+bootJar{ //springboot를 이용한 jar 파일 생성 시 필요한 설정 task
+	dependsOn asciidoctor //asciidoctor 를 의존하도록 하여, bootJar 생성 전에 asciidoctor task를 수행하도록 함
+}
+
+task copyDocument(type: Copy) {
+	dependsOn asciidoctor
+	from file("build/docs/asciidoc")
+	into file("src/main/resources/static")
+}
+
+build {
+	dependsOn copyDocument
+}
+
 jacocoTestReport {
 	reports {
 		xml.required = false
@@ -49,6 +80,7 @@ test {
 	// finalizedBy : 이(test) 작업에 대해 주어진 종료자 작업을 추가
 	finalizedBy jacocoTestReport // test 작업이 끝나고 jacocoTestReport를 실행
 	useJUnitPlatform()
+	outputs.dir snippetsDir
 }
 jacocoTestReport {
 	// dependsOn : 이 작업에 지정된 종속성을 추가
