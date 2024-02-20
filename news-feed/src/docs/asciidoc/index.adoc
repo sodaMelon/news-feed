@@ -16,10 +16,12 @@
 
 NOTE: 프로토타입버전에서는 Email로 유저구분을 하고 있습니다. (이후 정책에 의해 변경될 예정입니다.)
 
-[[resources-post-create]]
-=== User 생성
+[[User-join]]
+=== User 가입
 
-유저 생성(학생 또는 학교관리자)
+*[POST] http://base-url/user/join*
+
+가입을 통한 유저 생성(학생 또는 학교관리자)
 
 ==== HTTP request
 include::build/generated-snippets/user-join/request-fields.adoc[]
