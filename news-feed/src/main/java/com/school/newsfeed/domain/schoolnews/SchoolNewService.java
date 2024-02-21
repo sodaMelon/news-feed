@@ -4,6 +4,8 @@ import com.school.newsfeed.domain.schoolmanager.SchoolManager;
 import com.school.newsfeed.domain.schoolmanager.SchoolMangerRepository;
 import com.school.newsfeed.domain.schoolnews.dto.MakeSchoolNewsDto;
 import com.school.newsfeed.domain.schoolnewsdelivery.SchoolNewsDelivery;
+import com.school.newsfeed.domain.schoolsubscribe.SchoolSubscribe;
+import com.school.newsfeed.domain.schoolsubscribe.SchoolSubscribeRepository;
 import com.school.newsfeed.domain.user.dto.LoginUserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
@@ -18,8 +20,12 @@ import java.util.UUID;
 public class SchoolNewService {
     private final SchoolMangerRepository schoolManagerRepository;
     private final SchoolNewsRepository schoolNewsRepository;
+    private final SchoolSubscribeRepository schoolSubscribeRepository;
     private final ApplicationEventPublisher applicationEventPublisher;
 
+    public List<SchoolNews> searchSchoolNews(String schoolId, LoginUserDto user){
+        return schoolNewsRepository.findAllBySchoolIdAndDel(UUID.fromString(schoolId), false);
+    }
     private boolean isManagerInSchool(UUID schoolId, LoginUserDto user) {
         List<SchoolManager> managers = schoolManagerRepository.findAllBySchoolIdAndDel(schoolId, false);
         for (SchoolManager s : managers) {

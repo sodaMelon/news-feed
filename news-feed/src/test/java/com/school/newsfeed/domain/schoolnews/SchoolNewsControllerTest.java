@@ -54,6 +54,7 @@ public class SchoolNewsControllerTest {
         setSessionAsSchoolManager();
         createSchoolByManager(schoolName);//매니저로 생성 시도하면 성공
         createSchoolNews(schoolId);
+        searchSchoolNews(schoolId);
         updateSchoolNews(schoolNewsId);
         deleteSchoolNews(schoolNewsId);
     }
@@ -82,6 +83,26 @@ public class SchoolNewsControllerTest {
                                 fieldWithPath("createdDate").description("생성 시각"),
                                 fieldWithPath("modifiedDate").description("수정 시각")))).andReturn();
        schoolNewsId = JsonPath.parse(response.getResponse().getContentAsString()).read("id");
+    }
+
+    public void searchSchoolNews(String schoolId) throws Exception{
+        this.mockMvc
+                .perform(get("/school-news/school/{schoolId}",schoolId).session(mockSession)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(document("schoolnews-search",
+                        pathParameters(parameterWithName("schoolId").description("학교 ID"))
+                        ,
+                        responseFields(
+                                fieldWithPath("[].id").description("학교소식 UUID"),
+                                fieldWithPath("[].schoolId").description("학교 UUID"),
+                                fieldWithPath("[].title").description("학교소식 제목"),
+                                fieldWithPath("[].content").description("학교소식 본문"),
+                                fieldWithPath("[].del").description("삭제 처리 여부"),
+                                fieldWithPath("[].createdBy").description("생성 유저 UUID"),
+                                fieldWithPath("[].modifiedBy").description("수정 유저 UUID"),
+                                fieldWithPath("[].createdDate").description("생성 시각"),
+                                fieldWithPath("[].modifiedDate").description("수정 시각"))));
     }
 
     public void updateSchoolNews(String schoolNewsId) throws Exception{
