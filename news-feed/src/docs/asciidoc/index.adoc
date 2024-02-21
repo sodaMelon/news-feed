@@ -8,7 +8,11 @@
 
 * 관리자 : 이소담(sodamlee315@gmail.com)
 * 문서는 Spring REST Docs 를 사용하여, 생성되었습니다. (문서 수정시에도 꼭 테스트 코드에 의해 문서가 자동생성되도록 해주세요)
-* HTTP 201 Created는 DB 전파 문제를 고려하여 사용하지 않습니다.
+* 현재 loginUser정보는 세션에 담아 사용하고 있습니다.
+
+* 주의사항
+** HTTP 201 Created는 DB 전파 문제를 고려하여 사용하지 않습니다.
+** HTTP METHOD가 [DELETE]여도 실제 DB에서 삭제하지 않습니다. (내부 플래그 처리를 통해 노출만 조절됨.)
 
 [[resources-post]]
 == User
@@ -104,3 +108,75 @@ include::build/generated-snippets/school-create/response-fields.adoc[]
 include::build/generated-snippets/school-create/http-response.adoc[]
 * 실패했을 경우 401 반환(예: 학생이 학교를 생성하려고 했을 경우)
 include::build/generated-snippets/school-create-by-student/http-response.adoc[]
+
+
+
+== SchoolNews
+'학교소식 뉴스피드'의 학교 소식
+
+
+
+[[SchoolNews-create]]
+=== SchoolNews 생성
+
+*[POST] http://base-url/school-news*
+
+* userType이 학교 관리자고, 실제 학교정보에도 관리자로 등록되어 있다면, 해당 학교의 학교소식를 발행 할 수있다.
+
+
+==== HTTP request
+include::build/generated-snippets/schoolnews-create/request-fields.adoc[]
+include::build/generated-snippets/schoolnews-create/http-request.adoc[]
+
+
+
+==== HTTP response
+include::build/generated-snippets/schoolnews-create/response-fields.adoc[]
+* 성공했을 경우 200 반환
+include::build/generated-snippets/schoolnews-create/http-response.adoc[]
+* 실패했을 경우
+** 400 반환(예: 학교 관리자이지만, 해당 학교의 학교관리자로 등록되지는 않았을 때)
+** 401 반환(예: 학생이 학교를 생성하려고 했을 경우)
+
+[[SchoolNews-update]]
+=== SchoolNews 수정
+
+*[PATCH] http://base-url/school-news/{schoolNewsId}*
+
+* 해당 학교 소식의 학교 매니저라면, 발행된 학교소식을 수정할 수 있다.
+
+
+==== HTTP request
+include::build/generated-snippets/schoolnews-update/path-parameters.adoc[]
+include::build/generated-snippets/schoolnews-update/request-fields.adoc[]
+include::build/generated-snippets/schoolnews-update/http-request.adoc[]
+
+
+
+==== HTTP response
+* 성공했을 경우 200 반환
+include::build/generated-snippets/schoolnews-update/http-response.adoc[]
+* 실패했을 경우
+** 401 반환(예: 학생이 수정하려고 했을 경우)
+
+
+[[SchoolNews-delete]]
+=== SchoolNews 삭제
+
+*[DELETE] http://base-url/school-news/{schoolNewsId}*
+
+* 해당 학교 소식의 학교 매니저라면, 발행된 학교소식을 삭제할 수 있다.
+
+
+==== HTTP request
+include::build/generated-snippets/schoolnews-delete/path-parameters.adoc[]
+include::build/generated-snippets/schoolnews-delete/query-parameters.adoc[]
+include::build/generated-snippets/schoolnews-delete/http-request.adoc[]
+
+
+
+==== HTTP response
+* 성공했을 경우 200 반환
+include::build/generated-snippets/schoolnews-update/http-response.adoc[]
+* 실패했을 경우
+** 401 반환(예: 학생이 수정하려고 했을 경우)
