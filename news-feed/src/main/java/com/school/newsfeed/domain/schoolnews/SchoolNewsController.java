@@ -9,12 +9,20 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/school-news")
 public class SchoolNewsController {
     private final  SchoolNewService schoolNewsService;
 
+    @GetMapping("/school/{schoolId}")
+    public ResponseEntity searchSchoolNews(@PathVariable("schoolId") String schoolId, HttpSession session){
+        LoginUserDto user= (LoginUserDto) session.getAttribute("loginUser");
+        List<SchoolNews> news = schoolNewsService.searchSchoolNews(schoolId, user);
+        return !news.isEmpty()? ResponseEntity.ok(news):ResponseEntity.noContent().build();
+    }
     @PostMapping
     public ResponseEntity makeNewSchoolNews(@RequestBody MakeSchoolNewsDto dto, HttpSession session){
         LoginUserDto user= (LoginUserDto) session.getAttribute("loginUser");

@@ -3,8 +3,12 @@ package com.school.newsfeed.domain.schoolnews;
 import com.school.newsfeed.domain.schoolmanager.SchoolManager;
 import com.school.newsfeed.domain.schoolmanager.SchoolMangerRepository;
 import com.school.newsfeed.domain.schoolnews.dto.MakeSchoolNewsDto;
+import com.school.newsfeed.domain.schoolnewsdelivery.SchoolNewsDelivery;
+import com.school.newsfeed.domain.schoolsubscribe.SchoolSubscribe;
+import com.school.newsfeed.domain.schoolsubscribe.SchoolSubscribeRepository;
 import com.school.newsfeed.domain.user.dto.LoginUserDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,7 +20,12 @@ import java.util.UUID;
 public class SchoolNewService {
     private final SchoolMangerRepository schoolManagerRepository;
     private final SchoolNewsRepository schoolNewsRepository;
+    private final SchoolSubscribeRepository schoolSubscribeRepository;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
+    public List<SchoolNews> searchSchoolNews(String schoolId, LoginUserDto user){
+        return schoolNewsRepository.findAllBySchoolIdAndDel(UUID.fromString(schoolId), false);
+    }
     private boolean isManagerInSchool(UUID schoolId, LoginUserDto user) {
         List<SchoolManager> managers = schoolManagerRepository.findAllBySchoolIdAndDel(schoolId, false);
         for (SchoolManager s : managers) {
@@ -30,8 +39,8 @@ public class SchoolNewService {
     public SchoolNews makeNewNews(MakeSchoolNewsDto dto, LoginUserDto user) {
         SchoolNews result = null;
         if (isManagerInSchool(dto.getSchoolId(), user)) {
-            return schoolNewsRepository.save(new SchoolNews(dto));
-            //todo 학교 구독자들에게 SchoolNewsHistory발행
+            result = schoolNewsRepository.save(new SchoolNews(dto));
+            applicationEventPublisher.publishEvent(new SchoolNewsDelivery(result));
         }
         return result;
     }
