@@ -154,7 +154,7 @@ include::build/generated-snippets/schoolnews-update/http-request.adoc[]
 
 
 ==== HTTP response
-* 성공했을 경우 200 반환
+* 성공했을 경우 204 반환
 include::build/generated-snippets/schoolnews-update/http-response.adoc[]
 * 실패했을 경우
 ** 401 반환(예: 학생이 수정하려고 했을 경우)
@@ -176,7 +176,7 @@ include::build/generated-snippets/schoolnews-delete/http-request.adoc[]
 
 
 ==== HTTP response
-* 성공했을 경우 200 반환
+* 성공했을 경우 204 반환
 include::build/generated-snippets/schoolnews-update/http-response.adoc[]
 * 실패했을 경우
 ** 401 반환(예: 학생이 수정하려고 했을 경우)
