@@ -104,3 +104,32 @@ include::build/generated-snippets/school-create/response-fields.adoc[]
 include::build/generated-snippets/school-create/http-response.adoc[]
 * 실패했을 경우 401 반환(예: 학생이 학교를 생성하려고 했을 경우)
 include::build/generated-snippets/school-create-by-student/http-response.adoc[]
+
+
+
+== SchoolNews
+'학교소식 뉴스피드'의 학교 소식
+
+
+
+[[SchoolNews-create]]
+=== SchoolNews 생성
+
+*[POST] http://base-url/school-news*
+
+* userType이 학교 관리자고, 실제 학교정보에도 관리자로 등록되어 있다면, 해당 학교의 학교소식를 발행 할 수있다.
+
+
+==== HTTP request
+include::build/generated-snippets/schoolnews-create/request-fields.adoc[]
+include::build/generated-snippets/schoolnews-create/http-request.adoc[]
+
+
+
+==== HTTP response
+include::build/generated-snippets/schoolnews-create/response-fields.adoc[]
+* 성공했을 경우 200 반환
+include::build/generated-snippets/schoolnews-create/http-response.adoc[]
+* 실패했을 경우
+** 400 반환(예: 학교 관리자이지만, 해당 학교의 학교관리자로 등록되지는 않았을 때)
+** 401 반환(예: 학생이 학교를 생성하려고 했을 경우)
