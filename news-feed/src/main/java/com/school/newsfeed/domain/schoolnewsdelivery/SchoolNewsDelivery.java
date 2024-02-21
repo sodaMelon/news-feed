@@ -1,6 +1,8 @@
 package com.school.newsfeed.domain.schoolnewsdelivery;
 
 import com.school.newsfeed.common.BaseTimeEntity;
+import com.school.newsfeed.domain.schoolnews.SchoolNews;
+import com.school.newsfeed.domain.schoolsubscribe.SchoolSubscribe;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -35,4 +37,16 @@ public class SchoolNewsDelivery extends BaseTimeEntity {
 
     @Column
     private Boolean del; //default=false
+
+    public SchoolNewsDelivery(SchoolNews news) {
+        this.schoolNewsId = news.getId();
+        this.schoolId = news.getSchoolId();
+        this.del =false;
+    }
+    public SchoolNewsDelivery(SchoolSubscribe sub, UUID newsId) {
+        this.schoolNewsId = newsId;
+        this.schoolId = sub.getSchoolId();
+        this.userId = sub.getUserId();
+        this.del =false;
+    }
 }
