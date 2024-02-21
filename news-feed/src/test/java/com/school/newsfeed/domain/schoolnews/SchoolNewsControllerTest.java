@@ -25,8 +25,7 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(classes = NewsFeedApplication.class)
@@ -56,6 +55,7 @@ public class SchoolNewsControllerTest {
         createSchoolByManager(schoolName);//매니저로 생성 시도하면 성공
         createSchoolNews(schoolId);
         updateSchoolNews(schoolNewsId);
+        deleteSchoolNews(schoolNewsId);
     }
 
     public void createSchoolNews(String schoolId) throws Exception{
@@ -81,10 +81,10 @@ public class SchoolNewsControllerTest {
                                 fieldWithPath("modifiedBy").description("수정 유저 UUID"),
                                 fieldWithPath("createdDate").description("생성 시각"),
                                 fieldWithPath("modifiedDate").description("수정 시각")))).andReturn();
-        schoolNewsId = JsonPath.parse(response.getResponse().getContentAsString()).read("id");
+       schoolNewsId = JsonPath.parse(response.getResponse().getContentAsString()).read("id");
     }
 
-    public void updateSchoolNews(String schoolId) throws Exception{
+    public void updateSchoolNews(String schoolNewsId) throws Exception{
         MakeSchoolNewsDto request = new MakeSchoolNewsDto(UUID.fromString(schoolId), "2024년 수정 안내", "2024년은~ (수정된 본문 내용 이어짐..)");
         String jsonRequest = mapper.writeValueAsString(request);
         this.mockMvc
@@ -99,6 +99,17 @@ public class SchoolNewsControllerTest {
                                 fieldWithPath("schoolId").description("학교 UUID"),
                                 fieldWithPath("title").description("학교소식 제목"),
                                 fieldWithPath("content").description("학교소식 본문"))));
+    }
+
+    public void deleteSchoolNews(String schoolNewsId) throws Exception{
+        this.mockMvc
+                .perform(delete("/school-news/{schoolNewsId}", schoolNewsId)
+                        .queryParam("schoolId",schoolId).session(mockSession)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent())
+                .andDo(document("schoolnews-delete",
+                        pathParameters(parameterWithName("schoolNewsId").description("학교소식 UUID")),
+                        queryParameters(parameterWithName("schoolId").description("학교 UUID"))));
     }
 
     private void createSchoolByManager(String schoolName) throws Exception {

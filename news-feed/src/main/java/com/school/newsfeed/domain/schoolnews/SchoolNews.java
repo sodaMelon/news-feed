@@ -46,4 +46,8 @@ public class SchoolNews extends BaseEntity {
         this.title = dto.getTitle();
         this.content = dto.getContent();
     }
+
+    public void delete(){
+        this.del=true;
+    }
 }

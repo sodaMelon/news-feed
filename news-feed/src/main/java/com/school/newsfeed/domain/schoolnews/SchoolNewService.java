@@ -42,7 +42,16 @@ public class SchoolNewService {
             if (!news.isEmpty()) {
                 news.get().update(dto);
                 schoolNewsRepository.save(news.get());
-                System.out.println(news.get().getTitle());
+            }
+        }
+    }
+
+    public void delete(String schoolNewsId, String schoolId, LoginUserDto user) {
+        if (isManagerInSchool(UUID.fromString(schoolId), user)) {
+            Optional<SchoolNews> news = schoolNewsRepository.findById(UUID.fromString(schoolNewsId));
+            if (!news.isEmpty()) {
+                news.get().delete();
+                schoolNewsRepository.save(news.get());
             }
         }
     }

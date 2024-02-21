@@ -31,4 +31,14 @@ public class SchoolNewsController {
         schoolNewsService.update(schoolNewsId, dto, user);
         return ResponseEntity.noContent().build();
     }
+
+    @DeleteMapping("/{schoolNewsId}")
+    public ResponseEntity deleteSchoolNews(@PathVariable("schoolNewsId") String schoolNewsId,
+                                           @RequestParam String schoolId,
+                                           HttpSession session){
+        LoginUserDto user= (LoginUserDto) session.getAttribute("loginUser");
+        if (user.getUserType()!= UserType.SCHOOL_MANAGER) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        schoolNewsService.delete(schoolNewsId, schoolId, user);
+        return ResponseEntity.noContent().build();
+    }
 }
