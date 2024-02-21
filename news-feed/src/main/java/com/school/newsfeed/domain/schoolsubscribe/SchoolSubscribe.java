@@ -33,5 +33,6 @@ public class SchoolSubscribe extends BaseEntity {
     public SchoolSubscribe(UUID schoolId, UUID userId) {
         this.schoolId = schoolId;
         this.userId = userId;
+        this.del= false;
     }
 }

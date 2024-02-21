@@ -206,3 +206,22 @@ include::build/generated-snippets/schoolsubscribe-create/response-fields.adoc[]
 
 include::build/generated-snippets/schoolsubscribe-create/http-response.adoc[]
 
+[[SchoolSubscribe-search]]
+=== SchoolSubscribe 검색
+
+*[GET] http://base-url/school-subscribe/school/my-school*
+
+* (로그인 유저)학생이 현재 구독하고 있는 학교를 검색한다.(querey parameter로 검색옵션 추가 가능하게 될 예정)
+* 현재는 "모아보기"로도 사용가능
+
+==== HTTP request
+include::build/generated-snippets/schoolsubscribe-search/http-request.adoc[]
+
+
+
+==== HTTP response
+include::build/generated-snippets/schoolsubscribe-search/response-fields.adoc[]
+
+* 성공했을 경우 200 반환, 리스트 형태로 로그인한 유저가 구독하는 "학교 구독" 정보가 들어있다.
+
+include::build/generated-snippets/schoolsubscribe-search/http-response.adoc[]

@@ -26,6 +26,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWit
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(classes = NewsFeedApplication.class)
@@ -56,10 +57,10 @@ public class SchoolSubscribeControllerTest {
     public void contextLoad() throws Exception {
         mapper = new ObjectMapper();
         setSessionAsSchoolManager();
-        createSchoolByManager("제1구독초등학교");
-        createSchoolByManager("제2구독초등학교");//매니저로 생성 시도하면 성공
+        createSchoolByManager("구독초등학교");
         setSessionAsStudent();
         createSchoolSubscribes(schoolId);
+        searchMySubscribes();
       }
 
     private void createSchoolSubscribes(String schoolId) throws Exception{
@@ -80,6 +81,23 @@ public class SchoolSubscribeControllerTest {
                                 fieldWithPath("createdDate").description("생성 시각"),
                                 fieldWithPath("modifiedDate").description("수정 시각")))).andReturn();
         schoolSubscribeId= JsonPath.parse(response.getResponse().getContentAsString()).read("id");
+    }
+
+    private void searchMySubscribes() throws Exception{
+        this.mockMvc
+                .perform(get("/school-subscribe/school/my-school").session(mockSession)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(document("schoolsubscribe-search",
+                        responseFields(
+                                fieldWithPath("[].id").description("학교구독 UUID"),
+                                fieldWithPath("[].schoolId").description("학교 UUID"),
+                                fieldWithPath("[].userId").description("유저 UUID"),
+                                fieldWithPath("[].del").description("삭제 처리 여부"),
+                                fieldWithPath("[].createdBy").description("생성 유저 UUID"),
+                                fieldWithPath("[].modifiedBy").description("수정 유저 UUID"),
+                                fieldWithPath("[].createdDate").description("생성 시각"),
+                                fieldWithPath("[].modifiedDate").description("수정 시각")))).andReturn();
     }
 
 

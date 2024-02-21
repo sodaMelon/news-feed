@@ -3,8 +3,8 @@ package com.school.newsfeed.domain.schoolsubscribe;
 import com.school.newsfeed.domain.user.dto.LoginUserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -20,5 +20,9 @@ public class SchoolSubscribeService {
             result = schoolSubscribeRepository.save(new SchoolSubscribe(schoolUuid, user.getUserId()));
         }
         return result;
+    }
+
+    public List<SchoolSubscribe> findAllByUserId(LoginUserDto user) {
+        return schoolSubscribeRepository.findAllByUserIdAndDelOrderByCreatedDateDesc(user.getUserId(), false);
     }
 }
