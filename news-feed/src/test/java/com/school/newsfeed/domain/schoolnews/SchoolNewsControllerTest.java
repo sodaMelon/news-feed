@@ -22,9 +22,11 @@ import org.springframework.test.web.servlet.MvcResult;
 import java.util.UUID;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(classes = NewsFeedApplication.class)
@@ -53,6 +55,7 @@ public class SchoolNewsControllerTest {
         setSessionAsSchoolManager();
         createSchoolByManager(schoolName);//매니저로 생성 시도하면 성공
         createSchoolNews(schoolId);
+        updateSchoolNews(schoolNewsId);
     }
 
     public void createSchoolNews(String schoolId) throws Exception{
@@ -79,8 +82,25 @@ public class SchoolNewsControllerTest {
                                 fieldWithPath("createdDate").description("생성 시각"),
                                 fieldWithPath("modifiedDate").description("수정 시각")))).andReturn();
         schoolNewsId = JsonPath.parse(response.getResponse().getContentAsString()).read("id");
-
     }
+
+    public void updateSchoolNews(String schoolId) throws Exception{
+        MakeSchoolNewsDto request = new MakeSchoolNewsDto(UUID.fromString(schoolId), "2024년 수정 안내", "2024년은~ (수정된 본문 내용 이어짐..)");
+        String jsonRequest = mapper.writeValueAsString(request);
+        this.mockMvc
+                .perform(patch("/school-news/{schoolNewsId}", schoolNewsId).session(mockSession)
+                        .content(jsonRequest)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent())
+                .andDo(document("schoolnews-update", pathParameters(
+                                parameterWithName("schoolNewsId").description("학교소식 UUID")
+                        ),
+                        requestFields(
+                                fieldWithPath("schoolId").description("학교 UUID"),
+                                fieldWithPath("title").description("학교소식 제목"),
+                                fieldWithPath("content").description("학교소식 본문"))));
+    }
+
     private void createSchoolByManager(String schoolName) throws Exception {
         MakeSchoolDto request = new MakeSchoolDto(schoolName, "세종특별자치시 소담1로 35", SchoolType.ELEMENTARY, Area.SEJONG);
         String jsonRequest = mapper.writeValueAsString(request);

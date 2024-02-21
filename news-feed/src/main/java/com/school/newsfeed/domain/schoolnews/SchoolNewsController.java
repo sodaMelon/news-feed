@@ -7,10 +7,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,4 +23,12 @@ public class SchoolNewsController {
         return news!=null? ResponseEntity.ok(news):ResponseEntity.badRequest().build();
     }
 
+    @PatchMapping("/{schoolNewsId}")
+    public ResponseEntity updateSchoolNews(@PathVariable("schoolNewsId") String schoolNewsId,
+                                           @RequestBody MakeSchoolNewsDto dto, HttpSession session){
+        LoginUserDto user= (LoginUserDto) session.getAttribute("loginUser");
+        if (user.getUserType()!= UserType.SCHOOL_MANAGER) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        schoolNewsService.update(schoolNewsId, dto, user);
+        return ResponseEntity.noContent().build();
+    }
 }

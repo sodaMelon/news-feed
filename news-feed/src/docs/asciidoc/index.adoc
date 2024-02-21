@@ -133,3 +133,25 @@ include::build/generated-snippets/schoolnews-create/http-response.adoc[]
 * 실패했을 경우
 ** 400 반환(예: 학교 관리자이지만, 해당 학교의 학교관리자로 등록되지는 않았을 때)
 ** 401 반환(예: 학생이 학교를 생성하려고 했을 경우)
+
+[[SchoolNews-update]]
+=== SchoolNews 수정
+
+*[PATCH] http://base-url/school-news/{schoolNewsId}*
+
+* 해당 학교 소식의 학교 매니저라면, 발행된 학교소식을 수정할 수 있다.
+
+
+==== HTTP request
+include::build/generated-snippets/schoolnews-update/path-parameters.adoc[]
+include::build/generated-snippets/schoolnews-update/request-fields.adoc[]
+include::build/generated-snippets/schoolnews-update/http-request.adoc[]
+
+
+
+==== HTTP response
+* 성공했을 경우 200 반환
+include::build/generated-snippets/schoolnews-update/http-response.adoc[]
+* 실패했을 경우
+** 401 반환(예: 학생이 수정하려고 했을 경우)
+

@@ -8,25 +8,42 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class SchoolNewService {
     private final SchoolMangerRepository schoolManagerRepository;
     private final SchoolNewsRepository schoolNewsRepository;
-    public SchoolNews makeNewNews(MakeSchoolNewsDto dto, LoginUserDto user) {
-       List<SchoolManager> managers = schoolManagerRepository.findAllBySchoolIdAndDel(dto.getSchoolId(),false);
-       boolean isExist = false;
-       SchoolNews result = null;
-       for (SchoolManager s : managers){
-        if(s.getUserId().equals(user.getUserId())){
-            isExist=true;
-            break;
+
+    private boolean isManagerInSchool(UUID schoolId, LoginUserDto user) {
+        List<SchoolManager> managers = schoolManagerRepository.findAllBySchoolIdAndDel(schoolId, false);
+        for (SchoolManager s : managers) {
+            if (s.getUserId().equals(user.getUserId())) {
+                return true;
+            }
         }
-       }
-       if (isExist) {
-           return schoolNewsRepository.save(new SchoolNews(dto)); //todo 학교 구독자들에게 SchoolNewsHistory발행
-       }
+        return false;
+    }
+
+    public SchoolNews makeNewNews(MakeSchoolNewsDto dto, LoginUserDto user) {
+        SchoolNews result = null;
+        if (isManagerInSchool(dto.getSchoolId(), user)) {
+            return schoolNewsRepository.save(new SchoolNews(dto));
+            //todo 학교 구독자들에게 SchoolNewsHistory발행
+        }
         return result;
+    }
+
+    public void update(String schoolNewsId, MakeSchoolNewsDto dto, LoginUserDto user) {
+        if (isManagerInSchool(dto.getSchoolId(), user)) {
+            Optional<SchoolNews> news = schoolNewsRepository.findById(UUID.fromString(schoolNewsId));
+            if (!news.isEmpty()) {
+                news.get().update(dto);
+                schoolNewsRepository.save(news.get());
+                System.out.println(news.get().getTitle());
+            }
+        }
     }
 }

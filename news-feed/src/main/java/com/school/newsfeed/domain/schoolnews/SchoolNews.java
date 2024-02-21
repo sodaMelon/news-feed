@@ -40,4 +40,10 @@ public class SchoolNews extends BaseEntity {
         this.title = dto.getTitle();
         this.content = dto.getContent();
     }
+
+    public void update(MakeSchoolNewsDto dto) {
+        this.schoolId = dto.getSchoolId();
+        this.title = dto.getTitle();
+        this.content = dto.getContent();
+    }
 }
