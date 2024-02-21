@@ -13,20 +13,21 @@ public class MyFeed {
     private UUID deliveryId;
     private LocalDateTime deliveryCreatedDate;
     private UUID schoolId;
-    private String SchoolName;
-    private UUID schoolNewId;
-    private String SchoolNewsTitle;
-    private String SchoolNewsContents;
+    private String schoolName;
+    private UUID schoolNewsId;
+    private String schoolNewsTitle;
+    private String schoolNewsContent;
 
     @QueryProjection
     public MyFeed(UUID deliveryId, LocalDateTime deliveryCreatedDate, UUID schoolId,
                   String schoolName, UUID schoolNewId,
-                  String schoolNewsTitle, String schoolNewsContents) {
+                  String schoolNewsTitle, String schoolNewsContent) {
         this.deliveryId = deliveryId;
         this.deliveryCreatedDate = deliveryCreatedDate;
         this.schoolId = schoolId;
-        SchoolName = schoolName;
-        this.schoolNewId = schoolNewId;
-        SchoolNewsTitle = schoolNewsTitle;
+        this.schoolName = schoolName;
+        this.schoolNewsId = schoolNewId;
+        this.schoolNewsTitle = schoolNewsTitle;
+        this.schoolNewsContent = schoolNewsContent;
     }
 }

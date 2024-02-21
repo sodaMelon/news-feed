@@ -209,6 +209,38 @@ include::build/generated-snippets/schoolnews-delete/http-response.adoc[]
 '학교소식 뉴스피드'의 학교 구독 여부
 
 
+== SchoolNewsDelivery
+
+학교소식 배송(피드)
+[[SchoolNewsDelivery-mynewsfeed]]
+=== SchoolNewsDelivery(my-news-feed)
+
+*[GET] http://base-url/school-news-delivery/my-news-feed*
+
+* 유저가 구독한 모든 학교의 학교 소식을 모아보기할 수 있다.
+** 학교 소식이 노출되는 뉴스피드는 최신순으로 소식을 노출됨.
+** 유저는 학교 페이지를 구독하는 시점 이후 소식부터 뉴스피드를 받음
+** 학교 페이지 구독을 취소해도 기존 뉴스피드에 나타난 소식은 유지됨.
+
+==== HTTP request
+
+include::build/generated-snippets/schoolnewsdelivery-mynewsfeed/http-request.adoc[]
+
+
+
+==== HTTP response
+include::build/generated-snippets/schoolnewsdelivery-mynewsfeed/response-fields.adoc[]
+include::build/generated-snippets/schoolnewsdelivery-mynewsfeed/http-response.adoc[]
+* 성공했을 경우 200 반환
+* 실패했을 경우 400 반환 (예: 로그인을 하지 않아, 유저 정보가 없을 때)
+
+
+
+
+
+== SchoolSubscribe
+학교소식 구독
+
 
 [[SchoolSubscribe-create]]
 === SchoolSubscribe 생성

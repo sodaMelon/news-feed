@@ -1,6 +1,7 @@
 package com.school.newsfeed.domain.schoolnewsdelivery;
 
 import com.school.newsfeed.domain.schoolnewsdelivery.dto.MyFeed;
+import com.school.newsfeed.domain.schoolnewsdelivery.repository.SchoolNewsDeliveryRepository;
 import com.school.newsfeed.domain.user.dto.LoginUserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
