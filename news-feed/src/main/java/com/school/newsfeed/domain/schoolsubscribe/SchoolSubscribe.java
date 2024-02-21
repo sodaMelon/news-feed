@@ -29,4 +29,14 @@ public class SchoolSubscribe extends BaseEntity {
 
     @Column
     private Boolean del; //default=false
+
+    public SchoolSubscribe(UUID schoolId, UUID userId) {
+        this.schoolId = schoolId;
+        this.userId = userId;
+        this.del= false;
+    }
+
+    public void delete(){
+        this.del=true;
+    }
 }
