@@ -27,4 +27,13 @@ public class SchoolSubscribeController {
         List<SchoolSubscribe> result = schoolSubscribeService.findAllByUserId(user);
         return !result.isEmpty() ? ResponseEntity.ok(result) : ResponseEntity.noContent().build();
     }
+
+    @DeleteMapping("/school/{schoolId}/{schoolSubscribeId}")
+    public ResponseEntity deleteSchoolSubscribe(@PathVariable("schoolId") String schoolId,
+                                                @PathVariable("schoolSubscribeId") String schoolSubscribedId,
+                                                HttpSession session) {
+        LoginUserDto user = (LoginUserDto) session.getAttribute("loginUser");
+        schoolSubscribeService.delete(schoolId, schoolSubscribedId, user.getUserId());
+        return ResponseEntity.noContent().build();
+    }
 }

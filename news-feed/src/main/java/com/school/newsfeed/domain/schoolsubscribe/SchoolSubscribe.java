@@ -35,4 +35,8 @@ public class SchoolSubscribe extends BaseEntity {
         this.userId = userId;
         this.del= false;
     }
+
+    public void delete(){
+        this.del=true;
+    }
 }

@@ -21,12 +21,11 @@ import org.springframework.test.web.servlet.MvcResult;
 import java.util.UUID;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(classes = NewsFeedApplication.class)
@@ -61,7 +60,8 @@ public class SchoolSubscribeControllerTest {
         setSessionAsStudent();
         createSchoolSubscribes(schoolId);
         searchMySubscribes();
-      }
+        deleteSubscribes(schoolSubscribeId,schoolId);
+    }
 
     private void createSchoolSubscribes(String schoolId) throws Exception{
         MvcResult response = this.mockMvc
@@ -97,7 +97,18 @@ public class SchoolSubscribeControllerTest {
                                 fieldWithPath("[].createdBy").description("생성 유저 UUID"),
                                 fieldWithPath("[].modifiedBy").description("수정 유저 UUID"),
                                 fieldWithPath("[].createdDate").description("생성 시각"),
-                                fieldWithPath("[].modifiedDate").description("수정 시각")))).andReturn();
+                                fieldWithPath("[].modifiedDate").description("수정 시각"))));
+    }
+
+    private void deleteSubscribes(String schoolSubscribeId, String schoolId) throws Exception{
+        this.mockMvc
+                .perform(delete("/school-subscribe/school/{schoolId}/{schoolSubscribeId}", schoolId, schoolSubscribeId) // 경로 변수를 올바르게 확장
+                        .session(mockSession)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent())
+                .andDo(document("schoolsubscribe-delete", 
+                        pathParameters(parameterWithName("schoolId").description("학교 UUID"),
+                                parameterWithName("schoolSubscribeId").description("학교구독 UUID"))));
     }
 
 
