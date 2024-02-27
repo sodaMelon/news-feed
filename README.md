@@ -8,7 +8,7 @@ school-news-feed
 *(details & 요구사항 정리: [#1](https://github.com/sodaMelon/news-feed/issues/1) )*
 * Backend : Java(ver.21), Spring boot, JPA(ORM) & QureyDsl
 * DB : MySQL(개발 DB), H2(자동화된 테스트 진행 시 사용되는 휘발성 DB)
-* Test : JUnit5, Spring REST DOCS, ~~Jacoco~~(현재 Coverage 제한 없음)
+* Test : JUnit5, Spring REST DOCS, Jacoco(현재 **Code Coverage 90% 제한 有**)
 
 
 
@@ -21,6 +21,10 @@ school-news-feed
 *(details & 성능 issue 정리 : [#17](https://github.com/sodaMelon/news-feed/issues/17) , (automated by dbdocs.io))*
 
 ![erd](https://github.com/sodaMelon/news-feed/assets/66295123/30e63f45-919d-4739-b429-97122784b2fe)
+
+### 4. Code Coverage Report : 
+![code-coverage](https://github.com/sodaMelon/news-feed/assets/66295123/21c82421-6eee-4468-be8e-4189dc0da30a)
+
 
 
  ## QUICK CONTACT : sodamlee315@gmail.com
