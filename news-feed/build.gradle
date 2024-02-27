@@ -94,31 +94,52 @@ jacocoTestReport {
 		xml.required = false
 		csv.required = false
 		html.required = true
+		html.destination file('build/reports/coverage-report')
 	}
+
+	def Qdomains = []
+	for(qPattern in "**/QA" .. "**/QZ"){
+		Qdomains.add(qPattern+"*")
+	}
+
+	afterEvaluate {
+
+		classDirectories.setFrom(files(classDirectories.files.collect {
+			fileTree(dir: it,
+					exclude: ['**/NewsFeedApplication*.class','*.NewsFeedApplication*'] + Qdomains)
+		}))
+	}
+	// dependsOn : 이 작업에 지정된 종속성을 추가
+	dependsOn test // jacocoTestReport 에 test라는 종속성을 추가
+	finalizedBy 'jacocoTestCoverageVerification'
 }
+
+
 test {
 	// finalizedBy : 이(test) 작업에 대해 주어진 종료자 작업을 추가
 	finalizedBy jacocoTestReport // test 작업이 끝나고 jacocoTestReport를 실행
 	useJUnitPlatform()
 	outputs.dir snippetsDir
 }
-jacocoTestReport {
-	// dependsOn : 이 작업에 지정된 종속성을 추가
-	dependsOn test // jacocoTestReport 에 test라는 종속성을 추가
-	finalizedBy 'jacocoTestCoverageVerification'
-}
 
 jacocoTestCoverageVerification {
+	def Qdomains = []
+	for (qPattern in "*.QA".."*.QZ") {  // qPattern = "*.QA","*.QB","*.QC", ... "*.QZ" Q클래스prefix
+		Qdomains.add(qPattern + "*")
+	}
+
 	violationRules {
 		rule {
 			enabled = true;
 			element = 'CLASS'
 
 			limit {
-				counter = 'METHOD'
+				counter = 'LINE'
 				value = 'COVEREDRATIO'
-				minimum = 0.0
+				minimum = 0.9
 			}
+
+			excludes = ['**/NewsFeedApplication*.class','*.NewsFeedApplication*'] + Qdomains
 		}
 
 	}
